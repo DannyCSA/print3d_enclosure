@@ -81,6 +81,7 @@ function init() {
     // Listen for setpoint value changes
     setpointRef.on('value', (snapshot) => {
         const setpoint = snapshot.val().setpoint;
+        document.getElementById('currentSetPoint').innerText = setpoint.toFixed(2);
         chartADC_auto.yAxis[0].removePlotLine('setpoint-line');
         chartADC_auto.yAxis[0].addPlotLine({
             id: 'setpoint-line',
@@ -90,7 +91,8 @@ function init() {
             width: 2,
             label: {
                 text: 'Setpoint: ' + setpoint.toFixed(2) + '°C',
-                align: 'right',
+                align: 'left',
+                verticalAlign: 'bottom', // Set the vertical alignment to bottom
                 style: {
                     color: 'red'
                 }
@@ -121,8 +123,8 @@ var chartADC_auto = new Highcharts.Chart({
     },
     yAxis: {
         title: { text: 'Temperature [°C]' },
-        min: 12,
-        max: 50,
+        min: 0,
+        max: 60,
         plotLines: [{
             id: 'setpoint-line',
             color: 'red',
@@ -131,6 +133,7 @@ var chartADC_auto = new Highcharts.Chart({
             label: {
                 text: 'Setpoint',
                 align: 'left',
+                verticalAlign: 'bottom', // Set the vertical alignment to bottom
                 style: {
                     color: 'red'
                 }
