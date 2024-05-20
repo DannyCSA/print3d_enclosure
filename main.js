@@ -90,7 +90,7 @@ function init() {
             dashStyle: 'Dash',
             width: 2,
             label: {
-                text: 'Setpoint: ' + setpoint.toFixed(2) + '°C',
+                text: 'Setpoint:s ' + setpoint.toFixed(2) + '°C',
                 align: 'left',
                 verticalAlign: 'bottom', // Set the vertical alignment to bottom
                 style: {
