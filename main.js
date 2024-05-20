@@ -47,7 +47,7 @@ function show(param_div_class) {
 function init() {
     // Initialize Firebase
     const firebaseConfig = {
-        apiKey: "API_KEY_HERE",
+        apiKey: "AIzaSyCcm6_HYfGtwGW_aMfd3uruSWmstQj29Tc",
         authDomain: "enclosure-63e1c.firebaseapp.com",
         databaseURL: "https://enclosure-63e1c-default-rtdb.firebaseio.com",
         projectId: "enclosure-63e1c",
@@ -90,8 +90,8 @@ function init() {
             dashStyle: 'Dash',
             width: 2,
             label: {
-                text: 'Setpoint:s ' + setpoint.toFixed(2) + '°C',
-                align: 'left',
+                text: 'Setpoint: ' + setpoint.toFixed(2) + '°C',
+                align: 'right',
                 verticalAlign: 'bottom', // Set the vertical alignment to bottom
                 style: {
                     color: 'red'
@@ -127,15 +127,15 @@ var chartADC_auto = new Highcharts.Chart({
         max: 60,
         plotLines: [{
             id: 'setpoint-line',
-            color: 'red',
+            color: 'green',
             dashStyle: 'Dash',
             width: 2,
             label: {
                 text: 'Setpoint',
-                align: 'left',
+                align: 'right',
                 verticalAlign: 'bottom', // Set the vertical alignment to bottom
                 style: {
-                    color: 'red'
+                    color: 'green'
                 }
             }
         }]
