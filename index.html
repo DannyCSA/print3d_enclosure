@@ -5,51 +5,45 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EnclosureSystem</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
-    rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="./extra.css">
     <link rel="stylesheet" href="./style.css">
-    
-    
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
 </head>
 <body>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <div class="container">
-            <aside>
-                <div class="top">
-                    <div class="logo">
-                        <img src='https://i.ibb.co/tsRPg5W/p3d.png' alt="">
-                        <h2>PRINT<span class="danger">3D</span></h2>
-                    </div>
-                    <div class="close" id="close-btn">
-                        <span class="material-icons-sharp">close</span>
-                    </div>
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <img src='https://i.ibb.co/tsRPg5W/p3d.png' alt="">
+                    <h2>PRINT<span class="danger">3D</span></h2>
                 </div>
-                <div class="sidebar">
-                    <a href="#" class="active" onclick="show('home')">
-                        <span class="material-icons-sharp">grid_view</span>
-                        <h3>Home</h3>
-                    </a>
-                    <a href="#" onclick="show('manual')">
-                        <span class="material-icons-sharp">person_outline</span>
-                        <h3>Control Enclosure System</h3>
-                    </a>
-                    <a href="#" onclick="show('test')">
-                        <span class="material-icons-sharp">inventory</span>
-                        <h3>Test EnclosureSystem</h3>
-                    </a>
-                    
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">close</span>
                 </div>
-            </aside>
-
+            </div>
+            <div class="sidebar">
+                <a href="#" class="active" onclick="show('home')">
+                    <span class="material-icons-sharp">grid_view</span>
+                    <h3>Home</h3>
+                </a>
+                <a href="#" onclick="show('manual')">
+                    <span class="material-icons-sharp">person_outline</span>
+                    <h3>Control Enclosure System</h3>
+                </a>
+                <a href="#" onclick="show('test')">
+                    <span class="material-icons-sharp">inventory</span>
+                    <h3>Test EnclosureSystem</h3>
+                </a>
+            </div>
+        </aside>
         <main>
-            
             <div class="home">
                 <h1>Home</h1>
-
-                <h2>Current temperature: 0 °C</h2>          
+                <h2 id="currentTemperature">Current temperature: -- °C</h2>          
                 <h2>Current Set Point: 15 °C</h2>          
-                
             </div>
             <div class="manual">
                 <h1>Control Enclosure System</h1>
@@ -62,13 +56,10 @@
                     <div class="control-buttons">
                         <button class="button-29" onclick="btn_control('control-start')">START</button>  
                     </div>
-                    
                 </div>
-                
             </div>
             <div class="automatic">
                 <h1>Automatic</h1>
-
                 <div class="general-box">
                     <h2>Base</h2>
                     <div class="slider-box">
@@ -107,18 +98,15 @@
                         <h2 id="automaticValue8">0</h2>
                     </div>
                 </div>
-
                 <div class="general-box">
                     <div class="control-buttons">
                         <button class="button-29" onclick="btn_test('automatic-start')">START</button>  
                         <button class="button-29" onclick="btn_test('automatic-stop')">STOP</button> 
                     </div>
                 </div>
-                
             </div>
             <div class="test">
                 <h1>Test Mode</h1>
-                
                 <div class="general-box">
                     <h2>Fan control</h2>
                     <div class="control-buttons">
@@ -126,9 +114,7 @@
                         <button class="button-29" onclick="btn_test('test-stop')">STOP</button> 
                     </div>
                 </div>
-                
             </div>
-
             <div class="joysticks">
                 <h1>Joystick</h1>
                 <div class="general-box">
@@ -140,13 +126,9 @@
                         Angle: <span id="angle"> </span>
                     </p><br>
                     <canvas id="canvas" ></canvas><br>
-
-
                     <h2>Second joystick</h2>
-                    
                 </div>
             </div>
-
             <div class="general-box">
                 <div id="chart-ADC_auto" class="container"></div>
             </div>
@@ -157,12 +139,10 @@
                     <span class="material-icons-sharp">
                         menu
                     </span>
-
                 </button>
                 <div class="theme-toggler">
                     <span class="material-icons-sharp active">light_mode</span>
                     <span class="material-icons-sharp">dark_mode</span>
-                    
                 </div>
                 <div class="rssi">
                     <span class="material-icons-sharp rssi_4">signal_wifi_4_bar</span>
@@ -170,21 +150,15 @@
                     <span class="material-icons-sharp rssi_2">network_wifi_3_bar</span>
                     <span class="material-icons-sharp rssi_1">wifi_1_bar</span>
                 </div>
-
             </div>
-
             <div class="developers general-box">
                 <h2>Emergency STOP</h2>
-                    <div class="control-buttons">
-                        <button class="button-st" onclick="btn_test('test-stop')">STOP</button> 
-                    </div>
+                <div class="control-buttons">
+                    <button class="button-st" onclick="btn_test('test-stop')">STOP</button>
+                </div>
             </div>
-            
         </div>
     </div>
-    
     <script src="main.js"></script>
-    
-    
 </body>
 </html>
