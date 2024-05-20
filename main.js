@@ -130,7 +130,7 @@ var chartADC_auto = new Highcharts.Chart({
             width: 2,
             label: {
                 text: 'Setpoint',
-                align: 'right',
+                align: 'left',
                 style: {
                     color: 'red'
                 }
