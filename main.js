@@ -65,9 +65,38 @@ function init() {
     tempRef.on('value', (snapshot) => {
         const temperature = snapshot.val().temperature;
         document.getElementById('currentTemperature').innerText = temperature.toFixed(2);
+
+        var x = (new Date()).getTime(), y = parseFloat(temperature);
+        if (chartADC_auto.series[0].data.length > 40) {
+            chartADC_auto.series[0].addPoint([x, y], true, true, true);
+        } else {
+            chartADC_auto.series[0].addPoint([x, y], true, false, true);
+        }
     });
 
     show('home');
 }
+
+// Highcharts configuration for ADC auto chart
+var chartADC_auto = new Highcharts.Chart({
+    chart: { renderTo: 'chart-ADC_auto' },
+    title: { text: 'Temperature Control' },
+    series: [{ data: [], name: 'Enclosure Temperature' }],
+    colors: ['#470ce8'],
+    plotOptions: {
+        line: { animation: false, dataLabels: { enabled: true } },
+        pie: { colors: ['#470ce8'] }
+    },
+    xAxis: {
+        type: 'datetime',
+        dateTimeLabelFormats: { second: '%H:%M:%S' }
+    },
+    yAxis: {
+        title: { text: 'Temperature [°C]' },
+        min: 0,
+        max: 60
+    },
+    credits: { enabled: false }
+});
 
 window.onload = init;
