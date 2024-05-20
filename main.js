@@ -26,7 +26,6 @@ function updateSliderPWMmanual(element) {
     var sliderNumber = element.id.charAt(element.id.length - 1);
     var sliderValue = document.getElementById(element.id).value;
     document.getElementById("sliderValue" + sliderNumber).innerHTML = sliderValue;
-    firebase.database().ref('setpoint').set({ setpoint: parseFloat(sliderValue) });
 }
 
 function show(param_div_class) {
@@ -60,7 +59,8 @@ function init() {
     
     // Reference to the temperature value in the database
     const tempRef = database.ref('temperature');
-    
+    const setPointRef = database.ref('setpoint');
+
     // Listen for temperature value changes
     tempRef.on('value', (snapshot) => {
         const temperature = snapshot.val().temperature;
@@ -72,6 +72,12 @@ function init() {
         } else {
             chartADC_auto.series[0].addPoint([x, y], true, false, true);
         }
+    });
+
+    // Listen for setpoint value changes
+    setPointRef.on('value', (snapshot) => {
+        const setpoint = snapshot.val().setpoint;
+        document.getElementById('currentSetPoint').innerText = setpoint.toFixed(2);
     });
 
     show('home');
@@ -104,11 +110,3 @@ var chartADC_auto = new Highcharts.Chart({
 });
 
 window.onload = init;
-
-function btn_control(command) {
-    if (command === 'control-start') {
-        firebase.database().ref('status').set({ status: 'started' });
-    } else if (command === 'control-stop') {
-        firebase.database().ref('status').set({ status: 'stopped' });
-    }
-}
