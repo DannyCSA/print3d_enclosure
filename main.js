@@ -86,7 +86,7 @@ function init() {
         chartADC_auto.yAxis[0].addPlotLine({
             id: 'setpoint-line',
             value: setpoint,
-            color: 'green',
+            color: 'red',
             dashStyle: 'Dash',
             width: 2,
             label: {
@@ -94,7 +94,7 @@ function init() {
                 align: 'right',
                 verticalAlign: 'bottom', // Set the vertical alignment to bottom
                 style: {
-                    color: 'green'
+                    color: 'red'
                 }
             }
         });
@@ -111,6 +111,9 @@ var chartADC_auto = new Highcharts.Chart({
     series: [{
         data: [],
         name: 'Enclosure Temperature'
+    }, {
+        data: [],
+        name: 'Setpoint'        
     }],
     colors: colors,
     plotOptions: {
@@ -123,21 +126,13 @@ var chartADC_auto = new Highcharts.Chart({
     },
     yAxis: {
         title: { text: 'Temperature [°C]' },
-        min: 0,
-        max: 60,
+        min: 10,
+        max: 50,
         plotLines: [{
             id: 'setpoint-line',
-            color: 'green',
+            color: 'red',
             dashStyle: 'Dash',
             width: 2,
-            label: {
-                text: 'Setpoint',
-                align: 'right',
-                verticalAlign: 'bottom', // Set the vertical alignment to bottom
-                style: {
-                    color: 'green'
-                }
-            }
         }]
     },
     credits: { enabled: false }
