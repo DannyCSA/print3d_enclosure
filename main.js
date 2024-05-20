@@ -47,7 +47,7 @@ function show(param_div_class) {
 function init() {
     // Initialize Firebase
     const firebaseConfig = {
-        apiKey: "AIzaSyCcm6_HYfGtwGW_aMfd3uruSWmstQj29Tc",
+        apiKey: "API_KEY_HERE",
         authDomain: "enclosure-63e1c.firebaseapp.com",
         databaseURL: "https://enclosure-63e1c-default-rtdb.firebaseio.com",
         projectId: "enclosure-63e1c",
@@ -122,7 +122,20 @@ var chartADC_auto = new Highcharts.Chart({
     yAxis: {
         title: { text: 'Temperature [°C]' },
         min: 0,
-        max: 60
+        max: 60,
+        plotLines: [{
+            id: 'setpoint-line',
+            color: 'red',
+            dashStyle: 'Dash',
+            width: 2,
+            label: {
+                text: 'Setpoint',
+                align: 'right',
+                style: {
+                    color: 'red'
+                }
+            }
+        }]
     },
     credits: { enabled: false }
 });
