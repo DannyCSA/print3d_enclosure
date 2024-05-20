@@ -26,6 +26,8 @@ function updateSliderPWMmanual(element) {
     var sliderNumber = element.id.charAt(element.id.length - 1);
     var sliderValue = document.getElementById(element.id).value;
     document.getElementById("sliderValue" + sliderNumber).innerHTML = sliderValue;
+    // Update setpoint in Firebase
+    firebase.database().ref('setpoint').set({ setpoint: parseFloat(sliderValue) });
 }
 
 function show(param_div_class) {
@@ -59,8 +61,7 @@ function init() {
     
     // Reference to the temperature value in the database
     const tempRef = database.ref('temperature');
-    const setPointRef = database.ref('setpoint');
-
+    
     // Listen for temperature value changes
     tempRef.on('value', (snapshot) => {
         const temperature = snapshot.val().temperature;
@@ -74,10 +75,27 @@ function init() {
         }
     });
 
+    // Reference to the setpoint value in the database
+    const setpointRef = database.ref('setpoint');
+    
     // Listen for setpoint value changes
-    setPointRef.on('value', (snapshot) => {
+    setpointRef.on('value', (snapshot) => {
         const setpoint = snapshot.val().setpoint;
-        document.getElementById('currentSetPoint').innerText = setpoint.toFixed(2);
+        chartADC_auto.yAxis[0].removePlotLine('setpoint-line');
+        chartADC_auto.yAxis[0].addPlotLine({
+            id: 'setpoint-line',
+            value: setpoint,
+            color: 'red',
+            dashStyle: 'Dash',
+            width: 2,
+            label: {
+                text: 'Setpoint: ' + setpoint.toFixed(2) + '°C',
+                align: 'right',
+                style: {
+                    color: 'red'
+                }
+            }
+        });
     });
 
     show('home');
