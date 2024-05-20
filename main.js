@@ -98,7 +98,7 @@ function init() {
                 }
             }
         });
-    }); 
+    });
 
     show('home');
 }
@@ -111,9 +111,6 @@ var chartADC_auto = new Highcharts.Chart({
     series: [{
         data: [],
         name: 'Enclosure Temperature'
-    }, {
-        data: [],
-        name: 'Setpoint'        
     }],
     colors: colors,
     plotOptions: {
@@ -133,6 +130,14 @@ var chartADC_auto = new Highcharts.Chart({
             color: 'red',
             dashStyle: 'Dash',
             width: 2,
+            label: {
+                text: 'Setpoint',
+                align: 'right',
+                verticalAlign: 'bottom', // Set the vertical alignment to bottom
+                style: {
+                    color: 'red'
+                }
+            }
         }]
     },
     credits: { enabled: false }
