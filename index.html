@@ -8,8 +8,6 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="./extra.css">
     <link rel="stylesheet" href="./style.css">
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
 </head>
 <body>
     <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -42,8 +40,8 @@
         <main>
             <div class="home">
                 <h1>Home</h1>
-                <h2 id="currentTemperature">Current temperature: -- °C</h2>          
-                <h2>Current Set Point: 15 °C</h2>          
+                <h2>Current temperature: <span id="currentTemperature">0</span> °C</h2>
+                <h2>Current Set Point: 15 °C</h2>
             </div>
             <div class="manual">
                 <h1>Control Enclosure System</h1>
@@ -58,53 +56,6 @@
                     </div>
                 </div>
             </div>
-            <div class="automatic">
-                <h1>Automatic</h1>
-                <div class="general-box">
-                    <h2>Base</h2>
-                    <div class="slider-box">
-                        <input type="range" onchange="updateSliderPWMautomatic(this)" id="automaticslider1" min="0" max="180" step="1" value ="0" class="slider">
-                        <h2 id="automaticValue1">0</h2>
-                    </div>
-                    <div class="slider-box">
-                        <input type="range" onchange="updateSliderPWMautomatic(this)" id="automaticslider2" min="0" max="180" step="1" value ="180" class="slider">
-                        <h2 id="automaticValue2">0</h2>
-                    </div>
-                    <h2>First joint</h2>
-                    <div class="slider-box">
-                        <input type="range" onchange="updateSliderPWMautomatic(this)" id="automaticslider3" min="0" max="180" step="1" value ="0" class="slider">
-                        <h2 id="automaticValue3">0</h2>
-                    </div>
-                    <div class="slider-box">
-                        <input type="range" onchange="updateSliderPWMautomatic(this)" id="automaticslider4" min="0" max="180" step="1" value ="180" class="slider">
-                        <h2 id="automaticValue4">0</h2>
-                    </div>
-                    <h2>Second joint</h2>
-                    <div class="slider-box">
-                        <input type="range" onchange="updateSliderPWMautomatic(this)" id="automaticslider5" min="0" max="180" step="1" value ="0" class="slider">
-                        <h2 id="automaticValue5">0</h2>
-                    </div>
-                    <div class="slider-box">
-                        <input type="range" onchange="updateSliderPWMautomatic(this)" id="automaticslider6" min="0" max="180" step="1" value ="180" class="slider">
-                        <h2 id="automaticValue6">0</h2>
-                    </div>
-                    <h2>Third joint</h2>
-                    <div class="slider-box">
-                        <input type="range" onchange="updateSliderPWMautomatic(this)" id="automaticslider7" min="0" max="180" step="1" value ="0" class="slider">
-                        <h2 id="automaticValue7">0</h2>
-                    </div>
-                    <div class="slider-box">
-                        <input type="range" onchange="updateSliderPWMautomatic(this)" id="automaticslider8" min="0" max="180" step="1" value ="180" class="slider">
-                        <h2 id="automaticValue8">0</h2>
-                    </div>
-                </div>
-                <div class="general-box">
-                    <div class="control-buttons">
-                        <button class="button-29" onclick="btn_test('automatic-start')">START</button>  
-                        <button class="button-29" onclick="btn_test('automatic-stop')">STOP</button> 
-                    </div>
-                </div>
-            </div>
             <div class="test">
                 <h1>Test Mode</h1>
                 <div class="general-box">
@@ -115,30 +66,11 @@
                     </div>
                 </div>
             </div>
-            <div class="joysticks">
-                <h1>Joystick</h1>
-                <div class="general-box">
-                    <h2>First joystick</h2>
-                    <p style="text-align: center;">
-                        X: <span id="x_coordinate"> </span>
-                        Y: <span id="y_coordinate"> </span>
-                        Speed: <span id="speed"> </span> %
-                        Angle: <span id="angle"> </span>
-                    </p><br>
-                    <canvas id="canvas" ></canvas><br>
-                    <h2>Second joystick</h2>
-                </div>
-            </div>
-            <div class="general-box">
-                <div id="chart-ADC_auto" class="container"></div>
-            </div>
         </main>
         <div class="right">
             <div class="top">
                 <button id="menu-btn">
-                    <span class="material-icons-sharp">
-                        menu
-                    </span>
+                    <span class="material-icons-sharp">menu</span>
                 </button>
                 <div class="theme-toggler">
                     <span class="material-icons-sharp active">light_mode</span>
@@ -159,6 +91,8 @@
             </div>
         </div>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
