@@ -86,7 +86,7 @@ function init() {
         chartADC_auto.yAxis[0].addPlotLine({
             id: 'setpoint-line',
             value: setpoint,
-            color: 'red',
+            color: 'green',
             dashStyle: 'Dash',
             width: 2,
             label: {
@@ -94,7 +94,7 @@ function init() {
                 align: 'right',
                 verticalAlign: 'bottom', // Set the vertical alignment to bottom
                 style: {
-                    color: 'red'
+                    color: 'green'
                 }
             }
         });
