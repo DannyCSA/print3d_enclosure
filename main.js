@@ -98,7 +98,7 @@ function init() {
                 }
             }
         });
-    });
+    }); 
 
     show('home');
 }
