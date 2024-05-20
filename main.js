@@ -78,14 +78,18 @@ function init() {
 }
 
 // Highcharts configuration for ADC auto chart
+var colors = ['#470ce8'];
 var chartADC_auto = new Highcharts.Chart({
     chart: { renderTo: 'chart-ADC_auto' },
     title: { text: 'Temperature Control' },
-    series: [{ data: [], name: 'Enclosure Temperature' }],
-    colors: ['#470ce8'],
+    series: [{
+        data: [],
+        name: 'Enclosure Temperature'
+    }],
+    colors: colors,
     plotOptions: {
         line: { animation: false, dataLabels: { enabled: true } },
-        pie: { colors: ['#470ce8'] }
+        pie: { colors: colors }
     },
     xAxis: {
         type: 'datetime',

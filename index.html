@@ -42,20 +42,17 @@
                 <h1>Home</h1>
                 <h2>Current temperature: <span id="currentTemperature">0</span> °C</h2>
                 <h2>Current Set Point: 15 °C</h2>
-                <div class="general-box">
-                    <div id="chart-ADC_auto" class="container"></div>
-                </div>
             </div>
             <div class="manual">
                 <h1>Control Enclosure System</h1>
                 <div class="general-box">
                     <h2>Set Point</h2>
                     <div class="slider-box">
-                        <input type="range" onchange="updateSliderPWMmanual(this)" id="slider1" min="15" max="45" step="1" value ="0" class="slider">
+                        <input type="range" onchange="updateSliderPWMmanual(this)" id="slider1" min="15" max="45" step="1" value="0" class="slider">
                         <h2 id="sliderValue1">15</h2>
                     </div>
                     <div class="control-buttons">
-                        <button class="button-29" onclick="btn_control('control-start')">START</button>  
+                        <button class="button-29" onclick="btn_control('control-start')">START</button>
                     </div>
                 </div>
             </div>
@@ -64,10 +61,13 @@
                 <div class="general-box">
                     <h2>Fan control</h2>
                     <div class="control-buttons">
-                        <button class="button-29" onclick="btn_test('test-start')">START</button>  
-                        <button class="button-29" onclick="btn_test('test-stop')">STOP</button> 
+                        <button class="button-29" onclick="btn_test('test-start')">START</button>
+                        <button class="button-29" onclick="btn_test('test-stop')">STOP</button>
                     </div>
                 </div>
+            </div>
+            <div class="general-box">
+                <div id="chart-ADC_auto" class="container"></div>
             </div>
         </main>
         <div class="right">
