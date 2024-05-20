@@ -26,7 +26,7 @@ function updateSliderPWMmanual(element) {
     var sliderNumber = element.id.charAt(element.id.length - 1);
     var sliderValue = document.getElementById(element.id).value;
     document.getElementById("sliderValue" + sliderNumber).innerHTML = sliderValue;
-    // websocket.send(sliderNumber + "manual" + sliderValue.toString());
+    firebase.database().ref('setpoint').set({ setpoint: parseFloat(sliderValue) });
 }
 
 function show(param_div_class) {
@@ -104,3 +104,11 @@ var chartADC_auto = new Highcharts.Chart({
 });
 
 window.onload = init;
+
+function btn_control(command) {
+    if (command === 'control-start') {
+        firebase.database().ref('status').set({ status: 'started' });
+    } else if (command === 'control-stop') {
+        firebase.database().ref('status').set({ status: 'stopped' });
+    }
+}
