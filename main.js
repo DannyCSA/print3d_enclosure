@@ -153,4 +153,8 @@ function btn_test(action) {
     firebase.database().ref('fan_test').set({ fan_test: fanTest });
 }
 
+function btn_emergency_stop() {
+    firebase.database().ref('stop').set({ stop: true });
+}
+
 window.onload = init;
