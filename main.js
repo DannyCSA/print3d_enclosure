@@ -164,7 +164,7 @@ function btn_test(action) {
 }
 
 function btn_emergency_stop() {
-    firebase.database().ref('stop').set({ stop: true });
+    firebase.database().ref('stop').set(true);
 }
 
 window.onload = init;
