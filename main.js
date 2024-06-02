@@ -148,4 +148,9 @@ function btn_control(action) {
     firebase.database().ref('status').set({ status: status });
 }
 
+function btn_test(action) {
+    const fanTest = action === 'fan-on' ? 'on' : 'off';
+    firebase.database().ref('fan_test').set({ fan_test: fanTest });
+}
+
 window.onload = init;
