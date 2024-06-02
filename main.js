@@ -42,6 +42,16 @@ function show(param_div_class) {
     } else if (param_div_class === "test") {
         test.style.display = 'block';
     }
+
+    // Remove the 'active' class from all sidebar links
+    const sidebarLinks = document.querySelectorAll("aside .sidebar a");
+    sidebarLinks.forEach(link => link.classList.remove('active'));
+
+    // Add the 'active' class to the clicked link
+    const activeLink = document.querySelector(`aside .sidebar a[onclick="show('${param_div_class}')"]`);
+    if (activeLink) {
+        activeLink.classList.add('active');
+    }
 }
 
 function init() {
