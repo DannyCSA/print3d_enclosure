@@ -143,4 +143,9 @@ var chartADC_auto = new Highcharts.Chart({
     credits: { enabled: false }
 });
 
+function btn_control(action) {
+    const status = action === 'control-start' ? 'started' : 'standby';
+    firebase.database().ref('status').set({ status: status });
+}
+
 window.onload = init;
