@@ -144,12 +144,12 @@ var chartADC_auto = new Highcharts.Chart({
 });
 
 function btn_control(action) {
-    const status = action === 'control-start' ? 'started' : 'standby';
-    firebase.database().ref('status').set({ status: status });
+    const control = action === 'control-start' ? true : false;
+    firebase.database().ref('control').set({ control: control });
 }
 
 function btn_test(action) {
-    const fanTest = action === 'fan-on' ? 'on' : 'off';
+    const fanTest = action === 'fan-on' ? true : false;
     firebase.database().ref('fan_test').set({ fan_test: fanTest });
 }
 
