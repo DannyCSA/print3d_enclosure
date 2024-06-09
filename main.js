@@ -69,22 +69,6 @@ function init() {
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     
-    // Reference to the temperature value in the database
-    const tempRef = database.ref('temperature');
-    
-    // Listen for temperature value changes
-    tempRef.on('value', (snapshot) => {
-        const temperature = snapshot.val().temperature;
-        document.getElementById('currentTemperature').innerText = temperature.toFixed(2);
-
-        var x = (new Date()).getTime(), y = parseFloat(temperature);
-        if (chartADC_auto.series[0].data.length > 40) {
-            chartADC_auto.series[0].addPoint([x, y], true, true, true);
-        } else {
-            chartADC_auto.series[0].addPoint([x, y], true, false, true);
-        }
-    });
-
     // Reference to the setpoint value in the database
     const setpointRef = database.ref('setpoint');
     
@@ -111,6 +95,28 @@ function init() {
     });
 
     show('home');
+
+    // Connect to MQTT broker
+    const mqttClient = mqtt.connect('wss://test.mosquitto.org:8081');
+
+    mqttClient.on('connect', () => {
+        console.log('Connected to MQTT broker');
+        mqttClient.subscribe('temperature');
+    });
+
+    mqttClient.on('message', (topic, message) => {
+        if (topic === 'temperature') {
+            const temperature = parseFloat(message.toString().split(': ')[1]);
+            document.getElementById('currentTemperature').innerText = temperature.toFixed(2);
+
+            var x = (new Date()).getTime(), y = temperature;
+            if (chartADC_auto.series[0].data.length > 40) {
+                chartADC_auto.series[0].addPoint([x, y], true, true, true);
+            } else {
+                chartADC_auto.series[0].addPoint([x, y], true, false, true);
+            }
+        }
+    });
 }
 
 // Highcharts configuration for ADC auto chart
