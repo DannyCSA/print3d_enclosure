@@ -65,8 +65,8 @@ function init() {
 
     mqttClient.on('connect', () => {
         console.log('Connected to MQTT broker');
-        mqttClient.subscribe('temperature');
-        mqttClient.subscribe('setpoint');
+        mqttClient.subscribe('enc_temperature');
+        mqttClient.subscribe('enc_setpoint');
     });
 
     mqttClient.on('message', (topic, message) => {
@@ -145,20 +145,20 @@ var chartADC_auto = new Highcharts.Chart({
 
 function btn_control(action) {
     const control = action === 'control-start' ? true : false;
-    const topic = 'control';
+    const topic = 'enc_control';
     const message = JSON.stringify({ control: control });
     mqttClient.publish(topic, message);
 }
 
 function btn_test(action) {
     const fanTest = action === 'fan-on' ? true : false;
-    const topic = 'fan_test';
+    const topic = 'enc_fan_test';
     const message = JSON.stringify({ fan_test: fanTest });
     mqttClient.publish(topic, message);
 }
 
 function btn_emergency_stop() {
-    const topic = 'stop';
+    const topic = 'enc_stop';
     const message = JSON.stringify({ stop: true });
     mqttClient.publish(topic, message);
 }
