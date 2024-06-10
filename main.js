@@ -26,8 +26,11 @@ function updateSliderPWMmanual(element) {
     var sliderNumber = element.id.charAt(element.id.length - 1);
     var sliderValue = document.getElementById(element.id).value;
     document.getElementById("sliderValue" + sliderNumber).innerHTML = sliderValue;
-    // Update setpoint in Firebase
-    firebase.database().ref('setpoint').set({ setpoint: parseFloat(sliderValue) });
+
+    // Publish setpoint to MQTT
+    const topic = 'setpoint';
+    const message = JSON.stringify({ setpoint: parseFloat(sliderValue) });
+    mqttClient.publish(topic, message);
 }
 
 function show(param_div_class) {
@@ -55,45 +58,6 @@ function show(param_div_class) {
 }
 
 function init() {
-    // Initialize Firebase
-    const firebaseConfig = {
-        apiKey: "AIzaSyCcm6_HYfGtwGW_aMfd3uruSWmstQj29Tc",
-        authDomain: "enclosure-63e1c.firebaseapp.com",
-        databaseURL: "https://enclosure-63e1c-default-rtdb.firebaseio.com",
-        projectId: "enclosure-63e1c",
-        storageBucket: "enclosure-63e1c.appspot.com",
-        messagingSenderId: "472001080528",
-        appId: "1:472001080528:web:541397449ea49a2d3402d5"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-    
-    // Reference to the setpoint value in the database
-    const setpointRef = database.ref('setpoint');
-    
-    // Listen for setpoint value changes
-    setpointRef.on('value', (snapshot) => {
-        const setpoint = snapshot.val().setpoint;
-        document.getElementById('currentSetPoint').innerText = setpoint.toFixed(2);
-        chartADC_auto.yAxis[0].removePlotLine('setpoint-line');
-        chartADC_auto.yAxis[0].addPlotLine({
-            id: 'setpoint-line',
-            value: setpoint,
-            color: 'red',
-            dashStyle: 'Dash',
-            width: 2,
-            label: {
-                text: 'Setpoint: ' + setpoint.toFixed(2) + '°C',
-                align: 'right',
-                verticalAlign: 'bottom', // Set the vertical alignment to bottom
-                style: {
-                    color: 'red'
-                }
-            }
-        });
-    });
-
     show('home');
 
     // Connect to MQTT broker
@@ -102,6 +66,7 @@ function init() {
     mqttClient.on('connect', () => {
         console.log('Connected to MQTT broker');
         mqttClient.subscribe('temperature');
+        mqttClient.subscribe('setpoint');
     });
 
     mqttClient.on('message', (topic, message) => {
@@ -115,6 +80,25 @@ function init() {
             } else {
                 chartADC_auto.series[0].addPoint([x, y], true, false, true);
             }
+        } else if (topic === 'setpoint') {
+            const setpoint = JSON.parse(message.toString()).setpoint;
+            document.getElementById('currentSetPoint').innerText = setpoint.toFixed(2);
+            chartADC_auto.yAxis[0].removePlotLine('setpoint-line');
+            chartADC_auto.yAxis[0].addPlotLine({
+                id: 'setpoint-line',
+                value: setpoint,
+                color: 'red',
+                dashStyle: 'Dash',
+                width: 2,
+                label: {
+                    text: 'Setpoint: ' + setpoint.toFixed(2) + '°C',
+                    align: 'right',
+                    verticalAlign: 'bottom', // Set the vertical alignment to bottom
+                    style: {
+                        color: 'red'
+                    }
+                }
+            });
         }
     });
 }
@@ -161,16 +145,22 @@ var chartADC_auto = new Highcharts.Chart({
 
 function btn_control(action) {
     const control = action === 'control-start' ? true : false;
-    firebase.database().ref('control').set({ control: control });
+    const topic = 'control';
+    const message = JSON.stringify({ control: control });
+    mqttClient.publish(topic, message);
 }
 
 function btn_test(action) {
     const fanTest = action === 'fan-on' ? true : false;
-    firebase.database().ref('fan_test').set({ fan_test: fanTest });
+    const topic = 'fan_test';
+    const message = JSON.stringify({ fan_test: fanTest });
+    mqttClient.publish(topic, message);
 }
 
 function btn_emergency_stop() {
-    firebase.database().ref('stop').set({ stop: true });
+    const topic = 'stop';
+    const message = JSON.stringify({ stop: true });
+    mqttClient.publish(topic, message);
 }
 
 window.onload = init;
