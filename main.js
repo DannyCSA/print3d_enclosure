@@ -144,14 +144,14 @@ var chartADC_auto = new Highcharts.Chart({
 });
 
 function btn_control(action) {
-    const control = action === 'control-start' ? true : false;
+    const control = action === 'control-start' ? 1 : 0;
     const topic = 'enc_control';
     const message = JSON.stringify({ control: control });
     mqttClient.publish(topic, message);
 }
 
 function btn_test(action) {
-    const fanTest = action === 'fan-on' ? true : false;
+    const fanTest = action === 'fan-on' ? 1 : 0;
     const topic = 'enc_fan_test';
     const message = JSON.stringify({ fan_test: fanTest });
     mqttClient.publish(topic, message);
@@ -159,7 +159,7 @@ function btn_test(action) {
 
 function btn_emergency_stop() {
     const topic = 'enc_stop';
-    const message = JSON.stringify({ stop: true });
+    const message = JSON.stringify({ stop: 1 });
     mqttClient.publish(topic, message);
 }
 
