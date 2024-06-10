@@ -26,11 +26,8 @@ function updateSliderPWMmanual(element) {
     var sliderNumber = element.id.charAt(element.id.length - 1);
     var sliderValue = document.getElementById(element.id).value;
     document.getElementById("sliderValue" + sliderNumber).innerHTML = sliderValue;
-
-    // Publish setpoint to MQTT
-    const topic = 'enc_setpoint';
-    const message = JSON.stringify({ setpoint: parseFloat(sliderValue) });
-    mqttClient.publish(topic, message);
+    // Update setpoint in Firebase
+    firebase.database().ref('setpoint').set({ setpoint: parseFloat(sliderValue) });
 }
 
 function show(param_div_class) {
@@ -58,49 +55,62 @@ function show(param_div_class) {
 }
 
 function init() {
-    show('home');
+    // Initialize Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyCcm6_HYfGtwGW_aMfd3uruSWmstQj29Tc",
+        authDomain: "enclosure-63e1c.firebaseapp.com",
+        databaseURL: "https://enclosure-63e1c-default-rtdb.firebaseio.com",
+        projectId: "enclosure-63e1c",
+        storageBucket: "enclosure-63e1c.appspot.com",
+        messagingSenderId: "472001080528",
+        appId: "1:472001080528:web:541397449ea49a2d3402d5"
+    };
 
-    // Connect to MQTT broker
-    const mqttClient = mqtt.connect('wss://test.mosquitto.org:8081');
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    
+    // Reference to the temperature value in the database
+    const tempRef = database.ref('temperature');
+    
+    // Listen for temperature value changes
+    tempRef.on('value', (snapshot) => {
+        const temperature = snapshot.val().temperature;
+        document.getElementById('currentTemperature').innerText = temperature.toFixed(2);
 
-    mqttClient.on('connect', () => {
-        console.log('Connected to MQTT broker');
-        mqttClient.subscribe('enc_temperature');
-        mqttClient.subscribe('enc_setpoint');
-    });
-
-    mqttClient.on('message', (topic, message) => {
-        if (topic === 'enc_temperature') {
-            const temperature = parseFloat(message.toString());
-            document.getElementById('currentTemperature').innerText = temperature.toFixed(2);
-
-            var x = (new Date()).getTime(), y = temperature;
-            if (chartADC_auto.series[0].data.length > 40) {
-                chartADC_auto.series[0].addPoint([x, y], true, true, true);
-            } else {
-                chartADC_auto.series[0].addPoint([x, y], true, false, true);
-            }
-        } else if (topic === 'enc_setpoint') {
-            const setpoint = JSON.parse(message.toString()).setpoint;
-            document.getElementById('currentSetPoint').innerText = setpoint.toFixed(2);
-            chartADC_auto.yAxis[0].removePlotLine('setpoint-line');
-            chartADC_auto.yAxis[0].addPlotLine({
-                id: 'setpoint-line',
-                value: setpoint,
-                color: 'red',
-                dashStyle: 'Dash',
-                width: 2,
-                label: {
-                    text: 'Setpoint: ' + setpoint.toFixed(2) + '°C',
-                    align: 'right',
-                    verticalAlign: 'bottom', // Set the vertical alignment to bottom
-                    style: {
-                        color: 'red'
-                    }
-                }
-            });
+        var x = (new Date()).getTime(), y = parseFloat(temperature);
+        if (chartADC_auto.series[0].data.length > 40) {
+            chartADC_auto.series[0].addPoint([x, y], true, true, true);
+        } else {
+            chartADC_auto.series[0].addPoint([x, y], true, false, true);
         }
     });
+
+    // Reference to the setpoint value in the database
+    const setpointRef = database.ref('setpoint');
+    
+    // Listen for setpoint value changes
+    setpointRef.on('value', (snapshot) => {
+        const setpoint = snapshot.val().setpoint;
+        document.getElementById('currentSetPoint').innerText = setpoint.toFixed(2);
+        chartADC_auto.yAxis[0].removePlotLine('setpoint-line');
+        chartADC_auto.yAxis[0].addPlotLine({
+            id: 'setpoint-line',
+            value: setpoint,
+            color: 'red',
+            dashStyle: 'Dash',
+            width: 2,
+            label: {
+                text: 'Setpoint: ' + setpoint.toFixed(2) + '°C',
+                align: 'right',
+                verticalAlign: 'bottom', // Set the vertical alignment to bottom
+                style: {
+                    color: 'red'
+                }
+            }
+        });
+    });
+
+    show('home');
 }
 
 // Highcharts configuration for ADC auto chart
@@ -144,23 +154,17 @@ var chartADC_auto = new Highcharts.Chart({
 });
 
 function btn_control(action) {
-    const control = action === 'control-start' ? 1 : 0;
-    const topic = 'enc_control';
-    const message = JSON.stringify({ control: control });
-    mqttClient.publish(topic, message);
+    const control = action === 'control-start' ? true : false;
+    firebase.database().ref('control').set({ control: control });
 }
 
 function btn_test(action) {
-    const fanTest = action === 'fan-on' ? 1 : 0;
-    const topic = 'enc_fan_test';
-    const message = JSON.stringify({ fan_test: fanTest });
-    mqttClient.publish(topic, message);
+    const fanTest = action === 'fan-on' ? true : false;
+    firebase.database().ref('fan_test').set({ fan_test: fanTest });
 }
 
 function btn_emergency_stop() {
-    const topic = 'enc_stop';
-    const message = JSON.stringify({ stop: 1 });
-    mqttClient.publish(topic, message);
+    firebase.database().ref('stop').set({ stop: true });
 }
 
 window.onload = init;
