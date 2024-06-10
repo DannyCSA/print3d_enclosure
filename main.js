@@ -61,7 +61,7 @@ function init() {
     show('home');
 
     // Connect to MQTT broker
-    const mqttClient = mqtt.connect('wss://test.mosquitto.org:1883');
+    const mqttClient = mqtt.connect('mqtt://test.mosquitto.org:1883');
 
     mqttClient.on('connect', () => {
         console.log('Connected to MQTT broker');
