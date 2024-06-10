@@ -28,7 +28,7 @@ function updateSliderPWMmanual(element) {
     document.getElementById("sliderValue" + sliderNumber).innerHTML = sliderValue;
 
     // Publish setpoint to MQTT
-    const topic = 'setpoint';
+    const topic = 'enc_setpoint';
     const message = JSON.stringify({ setpoint: parseFloat(sliderValue) });
     mqttClient.publish(topic, message);
 }
@@ -61,7 +61,7 @@ function init() {
     show('home');
 
     // Connect to MQTT broker
-    const mqttClient = mqtt.connect('mqtt://test.mosquitto.org:1883');
+    const mqttClient = mqtt.connect('wss://test.mosquitto.org:8081');
 
     mqttClient.on('connect', () => {
         console.log('Connected to MQTT broker');
@@ -70,8 +70,8 @@ function init() {
     });
 
     mqttClient.on('message', (topic, message) => {
-        if (topic === 'temperature') {
-            const temperature = parseFloat(message.toString().split(': ')[1]);
+        if (topic === 'enc_temperature') {
+            const temperature = parseFloat(message.toString());
             document.getElementById('currentTemperature').innerText = temperature.toFixed(2);
 
             var x = (new Date()).getTime(), y = temperature;
@@ -80,7 +80,7 @@ function init() {
             } else {
                 chartADC_auto.series[0].addPoint([x, y], true, false, true);
             }
-        } else if (topic === 'setpoint') {
+        } else if (topic === 'enc_setpoint') {
             const setpoint = JSON.parse(message.toString()).setpoint;
             document.getElementById('currentSetPoint').innerText = setpoint.toFixed(2);
             chartADC_auto.yAxis[0].removePlotLine('setpoint-line');
